@@ -15,3 +15,7 @@ connections:
 dependencies:
 - PlatformIO
 - FastLED
+
+configure:
+- go to include/wifisettings.h
+- change ssid and password to network name and password

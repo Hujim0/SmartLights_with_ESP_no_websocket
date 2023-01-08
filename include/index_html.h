@@ -1,0 +1,114 @@
+const char *index_html = R"(
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP LED</title>
+</head>
+
+<body>
+    <p>
+        <label>
+            Light switch
+            <input type="checkbox" id="light_switch_checkbox" />
+            <script type="text/javascript">
+
+                var checkbox = document.getElementById("light_switch_checkbox");
+
+                checkbox.checked = (localStorage.getItem("switch_light_state") == "true") ? true : false;
+                checkbox.addEventListener("change", (event) => {
+                    localStorage.setItem("switch_light_state", event.currentTarget.checked);
+
+                    var index_url = "http://" + window.location.host;
+                    window.location.href = index_url + "/light_switch?switch_light_state=" +
+                        event.currentTarget.checked;
+                });
+            </script>
+        </label>
+    </p>
+    <p>
+        <label>
+            Light mode
+            <select id="mode_switch_select">
+                <option>0 - static</option>
+                <option>1 - rainbow</option>
+                <!-- <option>2 - rainbow</option> -->
+            </select>
+            <script type="text/javascript">
+
+                var select = document.getElementById("mode_switch_select");
+
+                select.selectedIndex = parseInt(localStorage.getItem("mode_switch_value"));
+                select.addEventListener("change", (event) => {
+                    localStorage.setItem("mode_switch_value", event.currentTarget.selectedIndex);
+
+                    var querry;
+                    if (event.target.selectedIndex == 0) {
+                        querry = "&r=" + localStorage.getItem("color_r") +
+                            "&g=" + localStorage.getItem("color_g") +
+                            "&b=" + localStorage.getItem("color_b");
+                    }
+
+                    var index_url = "http://" + window.location.host;
+                    window.location.href = index_url + "/mode_switch?mode_switch_value=" +
+                        event.currentTarget.selectedIndex + querry;
+                });
+            </script>
+        </label>
+    </p>
+    <p>
+        <label>
+            Choose your color!
+        </label>
+        <input type="color" id="color_picker" />
+    </p>
+
+    <script type="text/javascript">
+        var picker = document.getElementById("color_picker");
+
+        picker.value = localStorage.getItem("color");
+        picker.addEventListener("change", (event) => {
+            localStorage.setItem("color", event.target.value);
+
+            var color = picker.value;
+
+            const r = parseInt(color.substr(1, 2), 16);
+            localStorage.setItem("color_r", r);
+            const g = parseInt(color.substr(3, 2), 16);
+            localStorage.setItem("color_g", g);
+            const b = parseInt(color.substr(5, 2), 16);
+            localStorage.setItem("color_b", b);
+
+            var index_url = "http://" + window.location.host;
+            window.location.href = index_url + "/mode_switch?mode_switch_value=" + localStorage.getItem("mode_switch_value") +
+                "&r=" + r + "&g=" + g + "&b=" + b;
+        });
+
+    </script>
+    <p>
+        <label>Brightness</label>
+        <input type="range" id="brightness_slider" min="0" max="255" />
+        <script>
+            slider = document.getElementById("brightness_slider");
+
+            slider.value = localStorage.getItem("brightness");
+
+            slider.addEventListener("change", (event) => {
+                localStorage.setItem("brightness", event.target.value);
+
+                var index_url = "http://" + window.location.host;
+                window.location.href = index_url + "/brightness?b=" + event.target.value;
+            });
+        </script>
+    </p>
+    <p></p>
+    <hr />
+    <p><label>Made by <a href="https://github.com/Hujim0">hujimo</a></label></p>
+    <p><label>Licence - MIT</label></p>
+</body>
+
+</html>
+)";

@@ -12,5 +12,5 @@
 
 #define ATTEMPT_DURATION 30000
 
-const char *ssid = "RT-GPON-E3F6";
-const char *password = "8zMQmsVB";
+const char *ssid = "REPLACE_WITH_YOUR_NETWORK_NAME";
+const char *password = "REPLACE_WITH_YOUR_NETWORK_PASSWORD";

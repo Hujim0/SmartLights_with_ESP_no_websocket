@@ -21,7 +21,7 @@ CRGB leds[NUMPIXELS];
 
 ModeHandler modeHandler;
 
-void led_setup()
+void ledSetup()
 {
     modeHandler = ModeHandler();
 
@@ -47,7 +47,7 @@ void BrightnessHandler();
 ESP8266WebServer server(HTTP_PORT);
 WiFiClient client;
 
-void wifi_setup()
+void network_setup()
 {
     Serial.begin(115200);
     Serial.println("[ESP01] loaded");
@@ -96,9 +96,9 @@ void setup()
 {
     delay(INITIAL_DELAY);
 
-    wifi_setup();
+    network_setup();
 
-    led_setup();
+    ledSetup();
 
     // array<String, 3> args = {"1", "2", "reversed"};
 
